@@ -7,6 +7,8 @@
 ;; Copyright (c) 2009 Sergei Matusevich <sergei.matusevich@gmail.com>
 ;; All rights reserved.
 ;;
+;; Modifications: David A. Shamma
+;;
 ;; Redistribution and use in source and binary forms, with or without
 ;; modification, are permitted provided that the following conditions
 ;; are met:
@@ -103,12 +105,12 @@
         (pig-statement-indentation)
       (forward-line -1)
       (while (and (not (bobp)) (looking-at "^[ \t]*$"))
-        (forward-line -1) )
+        (forward-line -1))
       (cond
        ((bobp) 0)
        ((looking-at "^[ \t]*--") (current-indentation))
        ((looking-at ".*;[ \t]*$") (pig-statement-indentation))
-       (t (+ (pig-statement-indentation) default-tab-width)) ) ) )) )
+       (t (+ (pig-statement-indentation) default-tab-width)))))))
 
 (defun pig-statement-indentation ()
   (save-excursion
@@ -118,24 +120,24 @@
      ((looking-at ".*\\(}[ \t]*;\\|)\\)[ \t]*$")
       (end-of-line)
       (backward-list)
-      (pig-statement-indentation) )
+      (pig-statement-indentation))
      ((search-backward-regexp "[{;][ \t]*$" nil t)
       (forward-line 1)
       (beginning-of-line)
       (while (and (looking-at "^[ \t]*\\(--.*\\)?$")
-                  (save-excursion (end-of-line) (not (eobp))) )
-        (forward-line 1) )
-      (current-indentation) )
-     (t 0) ) ) )
+                  (save-excursion (end-of-line) (not (eobp))))
+        (forward-line 1))
+      (current-indentation))
+     (t 0))))
 
 (define-derived-mode pig-mode fundamental-mode "pig"
   "Major mode for editing Yahoo! .pig files"
   :syntax-table pig-mode-syntax-table
   (set (make-local-variable 'font-lock-defaults) '(pig-font-lock-keywords nil t))
-  (set (make-local-variable 'indent-line-function) 'pig-indent-line) )
+  (set (make-local-variable 'indent-line-function) 'pig-indent-line)
+  (set (make-local-variable 'comment-start) "-- ")
+  (set (make-local-variable 'comment-end) ""))
 
 (provide 'pig-mode)
 
 ;;; end of pig-mode.el
-
-
