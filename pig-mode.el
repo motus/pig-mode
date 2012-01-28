@@ -1,5 +1,3 @@
-; -*- Mode: Emacs-Lisp -*-
-
 ;;; pig-mode.el -- Major mode for Pig files
 
 ;; Software License Agreement (BSD License)
@@ -7,7 +5,7 @@
 ;; Copyright (c) 2009 Sergei Matusevich <sergei.matusevich@gmail.com>
 ;; All rights reserved.
 ;;
-;; Modifications: David A. Shamma
+;; Maintainer: David A. Shamma
 ;;
 ;; Redistribution and use in source and binary forms, with or without
 ;; modification, are permitted provided that the following conditions
@@ -31,10 +29,21 @@
 ;; (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 ;; THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+;;; Commentary:
+
+;; pig-mode is an Emacs major mode for editing Pig scripts. Currently it
+;; supports syntax highlighting and indentation for Pig versions 0.2 to
+;; 0.7. We track the changes to Pig syntax and try to support new Pig
+;; features ASAP.
+
+;;; Installation:
+
 ;; Put this file into your Emacs lisp path (eg. site-lisp)
 ;; and add the following line to your ~/.emacs file:
 ;;
 ;;   (require 'pig-mode)
+
+;;; Code:
 
 (require 'font-lock)
 
