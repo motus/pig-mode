@@ -60,6 +60,7 @@
 (defconst pig-font-lock-keywords
   `((,(regexp-opt
        '("COGROUP"
+<<<<<<< HEAD
 	 "CROSS"
 	 "DEFINE"
 	 "DISTINCT"
@@ -82,6 +83,30 @@
          "IF" "ALL" "ANY" "AS"  "USING" 
 	 "CONTINUOUSLY" "WINDOW" "TUPLES" "GENERATE" "EVAL"
 	 "INPUT" "OUTPUT" "SHIP" "CACHE" "FLATTEN"
+=======
+         "CROSS"
+         "DEFINE"
+         "DISTINCT"
+         "FILTER"
+         "FOREACH"
+         "GROUP"
+         "IMPORT"
+         "JOIN"
+         "LIMIT"
+         "LOAD"
+         "MAPREDUCE"
+         "ORDER" "BY"
+         "SAMPLE"
+         "SPLIT"
+         "STORE"
+         "STREAM" "THROUGH"
+         "UNION"
+         "ARRANGE"
+         "INTO"
+         "IF" "ALL" "ANY" "AS"  "USING" "INNER" "OUTER" "PARALLEL"
+         "CONTINUOUSLY" "WINDOW" "TUPLES" "GENERATE" "EVAL"
+         "INPUT" "OUTPUT" "SHIP" "CACHE" "FLATTEN"
+>>>>>>> upstream/master
          "SECONDS" "MINUTES" "HOURS" "ASC" "DESC" "LEFT" "RIGHT"
          "FULL"  "NULL" "AND" "OR" "NOT" "MATCHES" "IS"
          "DESCRIBE" "ILLUSTRATE" "DUMP")
@@ -94,62 +119,62 @@
     (,(concat
        (regexp-opt
         '(;; Eval Functions
-	  "AVG"
-	  "CONCAT"
-	  "COUNT"
-	  "COUNT_STAR"
-	  "DIFF"
-	  "IsEmpty"
-	  "MAX"
-	  "MIN"
-	  "SIZE"
-	  "SUM"
-	  "TOKENIZE"
-	  ;; Load/Store Functions
-	  "BinStorage"
-	  "JsonLoader"
-	  "JsonStorage"
-	  "PigDump"
-	  "PigStorage"
-	  "TextLoader"
-	  ;; Math Functions
-	  "ABS"
-	  "ACOS"
-	  "ASIN"
-	  "ATAN"
-	  "CBRT"
-	  "CEIL"
-	  "COS"
-	  "COSH"
-	  "EXP"
-	  "FLOOR"
-	  "LOG"
-	  "LOG10"
-	  "RANDOM"
-	  "ROUND"
-	  "SIN"
-	  "SINH"
-	  "SQRT"
-	  "TAN"
-	  "TANH"
-	  ;; String Functions
-	  "INDEXOF"
-	  "LAST_INDEX_OF"
-	  "LCFIRST"
-	  "LOWER"
-	  "REGEX_EXTRACT"
-	  "REGEX_EXTRACT_ALL"
-	  "REPLACE"
-	  "STRSPLIT"
-	  "SUBSTRING"
-	  "TRIM"
-	  "UCFIRST"
-	  "UPPER"
-	  ;; Tuple, Bag, Map Functions
-	  "TOTUPLE"
-	  "TOBAG"
-	  "TOMAP"
-	  "TOP")
+          "AVG"
+          "CONCAT"
+          "COUNT"
+          "COUNT_STAR"
+          "DIFF"
+          "IsEmpty"
+          "MAX"
+          "MIN"
+          "SIZE"
+          "SUM"
+          "TOKENIZE"
+          ;; Load/Store Functions
+          "BinStorage"
+          "JsonLoader"
+          "JsonStorage"
+          "PigDump"
+          "PigStorage"
+          "TextLoader"
+          ;; Math Functions
+          "ABS"
+          "ACOS"
+          "ASIN"
+          "ATAN"
+          "CBRT"
+          "CEIL"
+          "COS"
+          "COSH"
+          "EXP"
+          "FLOOR"
+          "LOG"
+          "LOG10"
+          "RANDOM"
+          "ROUND"
+          "SIN"
+          "SINH"
+          "SQRT"
+          "TAN"
+          "TANH"
+          ;; String Functions
+          "INDEXOF"
+          "LAST_INDEX_OF"
+          "LCFIRST"
+          "LOWER"
+          "REGEX_EXTRACT"
+          "REGEX_EXTRACT_ALL"
+          "REPLACE"
+          "STRSPLIT"
+          "SUBSTRING"
+          "TRIM"
+          "UCFIRST"
+          "UPPER"
+          ;; Tuple, Bag, Map Functions
+          "TOTUPLE"
+          "TOBAG"
+          "TOMAP"
+          "TOP")
         'words)
        "(")
      (1 font-lock-function-name-face))
@@ -158,9 +183,9 @@
     ("\\<$[0-9]+\\>" . font-lock-variable-name-face)
     (,(regexp-opt
        '(;; Simple Types
-	 "int" "long" "float" "double" "chararray" "bytearray" "boolean" 
-	 ;; Complex Types
-	 "tuple" "bag" "map")
+         "int" "long" "float" "double" "chararray" "bytearray" "boolean"
+         ;; Complex Types
+         "tuple" "bag" "map")
        'words)
      (1 font-lock-type-face)))
   "regexps to highlight in pig mode")
@@ -176,7 +201,7 @@
     (modify-syntax-entry ?\" "\""     st)
     (modify-syntax-entry ?\' "\""     st)
     (modify-syntax-entry ?\` "\""     st)
-    st) 
+    st)
   "Syntax table for pig mode")
 
 (defun pig-indent-line ()
