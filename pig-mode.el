@@ -60,30 +60,6 @@
 (defconst pig-font-lock-keywords
   `((,(regexp-opt
        '("COGROUP"
-<<<<<<< HEAD
-	 "CROSS"
-	 "DEFINE"
-	 "DISTINCT"
-	 "FILTER"
-	 "FOREACH"
-	 "GROUP"
-	 "IMPORT"
-	 "JOIN" "INNER" "OUTER" "PARALLEL"
-	 "LIMIT"
-	 "LOAD"
-	 "MAPREDUCE"
-	 "ORDER" "BY"
-	 "SAMPLE"
-	 "SPLIT"
-	 "STORE"  
-	 "STREAM" "THROUGH"
-	 "UNION"
-	 "ARRANGE"
-	 "INTO"
-         "IF" "ALL" "ANY" "AS"  "USING" 
-	 "CONTINUOUSLY" "WINDOW" "TUPLES" "GENERATE" "EVAL"
-	 "INPUT" "OUTPUT" "SHIP" "CACHE" "FLATTEN"
-=======
          "CROSS"
          "DEFINE"
          "DISTINCT"
@@ -106,7 +82,6 @@
          "IF" "ALL" "ANY" "AS"  "USING" "INNER" "OUTER" "PARALLEL"
          "CONTINUOUSLY" "WINDOW" "TUPLES" "GENERATE" "EVAL"
          "INPUT" "OUTPUT" "SHIP" "CACHE" "FLATTEN"
->>>>>>> upstream/master
          "SECONDS" "MINUTES" "HOURS" "ASC" "DESC" "LEFT" "RIGHT"
          "FULL"  "NULL" "AND" "OR" "NOT" "MATCHES" "IS"
          "DESCRIBE" "ILLUSTRATE" "DUMP")
