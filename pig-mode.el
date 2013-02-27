@@ -33,7 +33,7 @@
 
 ;; pig-mode is an Emacs major mode for editing Pig scripts. Currently it
 ;; supports syntax highlighting and indentation for Pig versions 0.2 to
-;; 0.10. We track the changes to Pig syntax and try to support new Pig
+;; 0.11. We track the changes to Pig syntax and try to support new Pig
 ;; features ASAP.
 
 ;;; Installation:
@@ -61,6 +61,7 @@
   `((,(regexp-opt
        '("COGROUP"
          "CROSS"
+	 "CUBE" "ROLLUP"
          "DEFINE"
          "DISTINCT"
          "FILTER"
@@ -84,7 +85,7 @@
          "INPUT" "OUTPUT" "SHIP" "CACHE" "FLATTEN"
          "SECONDS" "MINUTES" "HOURS" "ASC" "DESC" "LEFT" "RIGHT"
          "FULL"  "NULL" "AND" "OR" "NOT" "MATCHES" "IS"
-         "DESCRIBE" "ILLUSTRATE" "DUMP")
+         "DESCRIBE" "ILLUSTRATE" "DUMP" "RANK")
        'words)
      (1 font-lock-keyword-face))
 
@@ -112,6 +113,7 @@
           "PigDump"
           "PigStorage"
           "TextLoader"
+	  "HBaseStorage"
           ;; Math Functions
           "ABS"
           "ACOS"
@@ -145,6 +147,28 @@
           "TRIM"
           "UCFIRST"
           "UPPER"
+	  ;; DateTime Functions
+	  "AddDuration"
+	  "CurrentTime"
+	  "DaysBetween"
+	  "GetDay"
+	  "GetHour"
+	  "GetMilliSecond"
+	  "GetMinute"
+	  "GetMonth"
+	  "GetSecond"
+	  "GetWeek"
+	  "GetWeekYear"
+	  "GetYear"
+	  "HoursBetween"
+	  "MilliSecondsBetween"
+	  "MinutesBetween"
+	  "MonthsBetween"
+	  "SecondsBetween"
+	  "SubtractDuration"
+	  "ToDate"
+	  "WeeksBetween"
+	  "YearsBetween"
           ;; Tuple, Bag, Map Functions
           "TOTUPLE"
           "TOBAG"
@@ -158,7 +182,7 @@
     ("\\<$[0-9]+\\>" . font-lock-variable-name-face)
     (,(regexp-opt
        '(;; Simple Types
-         "int" "long" "float" "double" "chararray" "bytearray" "boolean"
+         "int" "long" "float" "double" "chararray" "bytearray" "boolean" "DateTime"
          ;; Complex Types
          "tuple" "bag" "map")
        'words)
