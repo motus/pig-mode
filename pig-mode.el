@@ -179,7 +179,7 @@
     st)
   "Syntax table for pig mode")
 
-(defcustom pig-indent-level 2
+(defcustom pig-indent-level default-tab-width
   "*Indentation of pig statements."
   :type 'integer :group 'pig)
 (put 'pig-indent-level 'safe-local-variable 'integerp)
