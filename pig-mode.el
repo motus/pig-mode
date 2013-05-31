@@ -265,7 +265,8 @@
    (interactive "r")
    (unless (pig-is-running-p)
      (pig-run-pig))
-   (comint-send-region pig-inferior-process-buffer start end))
+   (comint-send-region pig-inferior-process-buffer start end)
+   (comint-send-string pig-inferior-process-buffer "\n"))
 
 (defun pig-eval-line ()
   "Evaluate the current line with pig."
