@@ -255,10 +255,10 @@
 (defun pig-is-running-p ()
   (comint-check-proc pig-inferior-process-buffer))
 
-(defun pig-switch-to-buffer ()
+(defun pig-pop-to-buffer ()
   "Switch to the running pig process associated with the current buffer."
   (interactive)
-  (switch-to-buffer pig-inferior-process-buffer))
+  (pop-to-buffer pig-inferior-process-buffer))
 
 (defun pig-eval-region (start end)
    "Evaluate the region between START and END with pig."
@@ -295,7 +295,7 @@
                pig-executable-options)
       (inferior-pig-mode)))
   (when (called-interactively-p 'any)
-    (switch-to-buffer pig-inferior-process-buffer)))
+    (pig-pop-to-buffer)))
 
 (provide 'pig-mode)
 
