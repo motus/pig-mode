@@ -297,6 +297,16 @@
   (when (called-interactively-p 'any)
     (pig-pop-to-buffer)))
 
+(defvar pig-interaction-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "C-r") 'pig-eval-region)
+    (define-key map (kbd "C-l") 'pig-eval-line)
+    (define-key map (kbd "C-b") 'pig-eval-buffer)
+    (define-key map (kbd "C-z") 'pig-run-pig)
+    map))
+
+(define-key pig-mode-map (kbd "C-c") pig-interaction-map)
+
 (provide 'pig-mode)
 
 ;;; end of pig-mode.el
