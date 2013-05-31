@@ -46,6 +46,34 @@
 ;;; Code:
 
 (require 'font-lock)
+(require 'comint)
+
+(defgroup pig nil
+  "Syntax highlighting and inferior-process interaction for Apache Pig"
+  :link '(url-link "https://github.com/motus/pig-mode")
+  :prefix "pig-"
+  :group 'external)
+
+(defcustom pig-executable "pig"
+  "Process to invoke.  May be fully-qualified."
+  :group 'pig
+  :type '(string))
+
+(defcustom pig-executable-options '("-x" "local")
+  "Command line options to pass to the executable."
+  :group 'pig
+  :type '(list string))
+
+(defcustom pig-executable-prompt-regexp "^grunt> "
+  "Regular expression for the inferior-process prompt"
+  :group 'pig
+  :type '(regexp))
+
+(defcustom pig-inferior-process-buffer "*pig*"
+  "Name of the buffer containing the running process."
+  :group 'pig
+  :type '(string))
+
 
 (defvar pig-mode-hook nil)
 
@@ -221,6 +249,63 @@
   (set (make-local-variable 'indent-line-function) 'pig-indent-line)
   (set (make-local-variable 'comment-start) "-- ")
   (set (make-local-variable 'comment-end) ""))
+
+;;; Interaction:
+
+(defun pig-is-running-p ()
+  (comint-check-proc pig-inferior-process-buffer))
+
+(defun pig-pop-to-buffer ()
+  "Switch to the running pig process associated with the current buffer."
+  (interactive)
+  (pop-to-buffer pig-inferior-process-buffer))
+
+(defun pig-eval-region (start end)
+   "Evaluate the region between START and END with pig."
+   (interactive "r")
+   (unless (pig-is-running-p)
+     (pig-run-pig))
+   (comint-send-region pig-inferior-process-buffer start end)
+   (comint-send-string pig-inferior-process-buffer "\n"))
+
+(defun pig-eval-line ()
+  "Evaluate the current line with pig."
+  (interactive)
+  (pig-eval-region (save-excursion (move-beginning-of-line nil) (point))
+                   (save-excursion (move-end-of-line nil) (point))))
+
+(defun pig-eval-buffer ()
+  "Evaluate the current buffer with pig."
+  (interactive)
+  (pig-eval-region (point-min) (point-max)))
+
+(define-derived-mode inferior-pig-mode comint-mode "Pig"
+  "Interact with a PIG process through Emacs."
+  (setq comint-prompt-regexp "^grunt>")
+  (setq comint-use-prompt-regexp t)
+  (setq comint-prompt-read-only t))
+
+(defun pig-run-pig ()
+  "Start an inferior pig REPL."
+  (interactive)
+  (unless (pig-is-running-p)
+    (with-current-buffer
+        (apply 'make-comint-in-buffer "Pig" pig-inferior-process-buffer
+               pig-executable nil
+               pig-executable-options)
+      (inferior-pig-mode)))
+  (when (called-interactively-p 'any)
+    (pig-pop-to-buffer)))
+
+(defvar pig-interaction-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "C-r") 'pig-eval-region)
+    (define-key map (kbd "C-l") 'pig-eval-line)
+    (define-key map (kbd "C-b") 'pig-eval-buffer)
+    (define-key map (kbd "C-z") 'pig-run-pig)
+    map))
+
+(define-key pig-mode-map (kbd "C-c") pig-interaction-map)
 
 (provide 'pig-mode)
 
