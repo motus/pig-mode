@@ -46,6 +46,34 @@
 ;;; Code:
 
 (require 'font-lock)
+(require 'comint)
+
+(defgroup pig nil
+  "Syntax highlighting and inferior-process interaction for Apache Pig"
+  :link '(url-link "https://github.com/motus/pig-mode")
+  :prefix "pig-"
+  :group 'external)
+
+(defcustom pig-executable "pig"
+  "Process to invoke.  May be fully-qualified."
+  :group 'pig
+  :type '(string))
+
+(defcustom pig-executable-options '("-x" "local")
+  "Command line options to pass to the executable."
+  :group 'pig
+  :type '(list string))
+
+(defcustom pig-executable-prompt-regexp "^grunt> "
+  "Regular expression for the inferior-process prompt"
+  :group 'pig
+  :type '(regexp))
+
+(defcustom pig-inferior-process-buffer "*pig*"
+  "Name of the buffer containing the running process."
+  :group 'pig
+  :type '(string))
+
 
 (defvar pig-mode-hook nil)
 
