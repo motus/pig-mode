@@ -250,6 +250,52 @@
   (set (make-local-variable 'comment-start) "-- ")
   (set (make-local-variable 'comment-end) ""))
 
+;;; Interaction:
+
+(defun pig-is-running-p ()
+  (comint-check-proc pig-inferior-process-buffer))
+
+(defun pig-switch-to-buffer ()
+  "Switch to the running pig process associated with the current buffer."
+  (interactive)
+  (switch-to-buffer pig-inferior-process-buffer))
+
+(defun pig-eval-region (start end)
+   "Evaluate the region between START and END with pig."
+   (interactive "r")
+   (unless (pig-is-running-p)
+     (pig-run-pig))
+   (comint-send-region pig-inferior-process-buffer start end))
+
+(defun pig-eval-line ()
+  "Evaluate the current line with pig."
+  (interactive)
+  (pig-eval-region (save-excursion (move-beginning-of-line nil) (point))
+                   (save-excursion (move-end-of-line nil) (point))))
+
+(defun pig-eval-buffer ()
+  "Evaluate the current buffer with pig."
+  (interactive)
+  (pig-eval-region (point-min) (point-max)))
+
+(define-derived-mode inferior-pig-mode comint-mode "Pig"
+  "Interact with a PIG process through Emacs."
+  (setq comint-prompt-regexp "^grunt>")
+  (setq comint-use-prompt-regexp t)
+  (setq comint-prompt-read-only t))
+
+(defun pig-run-pig ()
+  "Start an inferior pig REPL."
+  (interactive)
+  (unless (pig-is-running-p)
+    (with-current-buffer
+        (apply 'make-comint-in-buffer "Pig" pig-inferior-process-buffer
+               pig-executable nil
+               pig-executable-options)
+      (inferior-pig-mode)))
+  (when (called-interactively-p 'any)
+    (switch-to-buffer pig-inferior-process-buffer)))
+
 (provide 'pig-mode)
 
 ;;; end of pig-mode.el
