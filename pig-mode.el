@@ -207,6 +207,11 @@
     st)
   "Syntax table for pig mode")
 
+(defcustom pig-indent-level default-tab-width
+  "*Indentation of pig statements."
+  :type 'integer :group 'pig)
+(put 'pig-indent-level 'safe-local-variable 'integerp)
+
 (defun pig-indent-line ()
   "Indent current line as Pig code"
   (interactive)
@@ -221,7 +226,7 @@
        ((bobp) 0)
        ((looking-at "^[ \t]*--") (current-indentation))
        ((looking-at ".*;[ \t]*$") (pig-statement-indentation))
-       (t (+ (pig-statement-indentation) default-tab-width)))))))
+       (t (+ (pig-statement-indentation) pig-indent-level)))))))
 
 (defun pig-statement-indentation ()
   (save-excursion
