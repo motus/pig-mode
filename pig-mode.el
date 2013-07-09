@@ -1,4 +1,4 @@
-;;; pig-mode.el -- Major mode for Pig files
+;;; pig-mode.el --- Major mode for Pig files
 
 ;; Software License Agreement (BSD License)
 ;;
@@ -83,6 +83,7 @@
     keymap)
   "Keymap for pig major mode")
 
+;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.pig\\'" . pig-mode))
 
 (defconst pig-font-lock-keywords
@@ -246,6 +247,7 @@
       (current-indentation))
      (t 0))))
 
+;;;###autoload
 (define-derived-mode pig-mode fundamental-mode "pig"
   "Major mode for editing Yahoo! .pig files"
   :syntax-table pig-mode-syntax-table
@@ -314,4 +316,4 @@
 
 (provide 'pig-mode)
 
-;;; end of pig-mode.el
+;;; pig-mode.el ends here
