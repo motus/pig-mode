@@ -49,7 +49,7 @@
 (require 'comint)
 
 (defgroup pig nil
-  "Syntax highlighting and inferior-process interaction for Apache Pig"
+  "Syntax highlighting and inferior-process interaction for Apache Pig."
   :link '(url-link "https://github.com/motus/pig-mode")
   :prefix "pig-"
   :group 'external)
@@ -102,6 +102,7 @@
          "LOAD"
          "MAPREDUCE"
          "ORDER" "BY"
+         "RANK"
          "SAMPLE"
          "SPLIT"
          "STORE"
@@ -114,7 +115,7 @@
          "INPUT" "OUTPUT" "SHIP" "CACHE" "FLATTEN"
          "SECONDS" "MINUTES" "HOURS" "ASC" "DESC" "LEFT" "RIGHT"
          "FULL"  "NULL" "AND" "OR" "NOT" "MATCHES" "IS"
-         "DESCRIBE" "ILLUSTRATE" "DUMP" "RANK")
+         "DESCRIBE" "ILLUSTRATE" "DUMP")
        'words)
      (1 font-lock-keyword-face))
 
