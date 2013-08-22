@@ -283,6 +283,32 @@
 
 ;;; Interaction:
 
+;; (defun pig--open-query-in-reference (query)
+;;   "Open QUERY in Processing reference."
+;;   (let ((help-dir (processing--get-dir "modes/java/reference/"))
+;;         help-file-fn help-file-keyword)
+;;     (when help-dir
+;;       (setq help-file-fn (concat help-dir query ".html"))
+;;       (setq help-file-keyword (concat help-dir query "_.html"))
+;;       (cond ((file-exists-p help-file-fn) (browse-url help-file-fn))
+;;             ((file-exists-p help-file-keyword) (browse-url help-file-keyword))
+;;             (t (message "No help file for %s" query))))))
+
+;; (defun pig-search-in-reference (query)
+;;   "Search QUERY in Processing reference.
+;; When calle interactively, prompt the user for QUERY."
+;;   (interactive "sFind reference for: ")
+;;   ;; trim query before open reference
+;;   (processing--open-query-in-reference (replace-regexp-in-string
+;;                                         "\\`[ \t\n()]*" ""
+;;                                         (replace-regexp-in-string
+;;                                          "[ \t\n()]*\\'" "" query))))
+
+;; (defun pig-find-in-reference ()
+;;   "Find word under cursor in Pig reference."
+;;   (interactive)
+;;   (pig--open-query-in-reference (thing-at-point 'word)))
+
 (defun pig-is-running-p ()
   (comint-check-proc pig-inferior-process-buffer))
 
