@@ -74,7 +74,6 @@
   :group 'pig
   :type '(string))
 
-
 (defvar pig-mode-hook nil)
 
 (defvar pig-mode-map
