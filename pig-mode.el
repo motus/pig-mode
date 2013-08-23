@@ -45,8 +45,14 @@
 
 ;;; Code:
 
-(require 'font-lock)
-(require 'comint)
+(eval-when-compile
+  (require 'compile)
+  (require 'cl)
+  (require 'easymenu)
+  ;; (require 'thingatpt)
+  ;; (require 'cc-vars)
+  (require 'font-lock)
+  (require 'comint))
 
 (defgroup pig nil
   "Syntax highlighting and inferior-process interaction for Apache Pig."
@@ -353,6 +359,22 @@
       (inferior-pig-mode)))
   (when (called-interactively-p 'any)
     (pig-pop-to-buffer)))
+
+(easy-menu-define pig-mode-menu pig-mode-map
+  "Menu used when Pig major mode is active."
+  '("Pig"
+    ["Run Grunt" pig-run-pig
+     :help "Run Grunt Shell"]
+    "---"
+    ["Eval Buffer" pig-eval-buffer
+     :help "Pig Eval Buffer"]
+    ["Eval Region" pig-eval-region
+     :help "Pig Eval Region"]
+    ["Eval Line" pig-eval-line
+     :help "Pig Eval Line"]
+    "---"
+    ["Settings" (customize-group 'pig)
+     :help "Pig-mode settings"]))
 
 (defvar pig-interaction-map
   (let ((map (make-sparse-keymap)))
