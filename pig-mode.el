@@ -1,4 +1,5 @@
 ;;; pig-mode.el --- Major mode for Pig files
+;; Version: 20130821.1454
 
 ;; Software License Agreement (BSD License)
 ;;
@@ -75,10 +76,23 @@
   :group 'pig
   :type '(regexp))
 
+(defcustom pig-version "0.11.1"
+  "Pig version for the docs url."
+  :group 'pig
+  :type '(string))
+
+(defcustom pig-doc-url "http://pig.apache.org/docs/"
+  "Search URL of the official Processing forums.
+   %v will be replaced with the version. 
+   %s will be replaced with the search query."
+  :type 'string
+  :group 'processing)
+
 (defcustom pig-inferior-process-buffer "*pig*"
   "Name of the buffer containing the running process."
   :group 'pig
   :type '(string))
+
 
 (defvar pig-mode-hook nil)
 
@@ -289,32 +303,6 @@
 
 ;;; Interaction:
 
-;; (defun pig--open-query-in-reference (query)
-;;   "Open QUERY in Processing reference."
-;;   (let ((help-dir (processing--get-dir "modes/java/reference/"))
-;;         help-file-fn help-file-keyword)
-;;     (when help-dir
-;;       (setq help-file-fn (concat help-dir query ".html"))
-;;       (setq help-file-keyword (concat help-dir query "_.html"))
-;;       (cond ((file-exists-p help-file-fn) (browse-url help-file-fn))
-;;             ((file-exists-p help-file-keyword) (browse-url help-file-keyword))
-;;             (t (message "No help file for %s" query))))))
-
-;; (defun pig-search-in-reference (query)
-;;   "Search QUERY in Processing reference.
-;; When calle interactively, prompt the user for QUERY."
-;;   (interactive "sFind reference for: ")
-;;   ;; trim query before open reference
-;;   (processing--open-query-in-reference (replace-regexp-in-string
-;;                                         "\\`[ \t\n()]*" ""
-;;                                         (replace-regexp-in-string
-;;                                          "[ \t\n()]*\\'" "" query))))
-
-;; (defun pig-find-in-reference ()
-;;   "Find word under cursor in Pig reference."
-;;   (interactive)
-;;   (pig--open-query-in-reference (thing-at-point 'word)))
-
 (defun pig-is-running-p ()
   (comint-check-proc pig-inferior-process-buffer))
 
@@ -360,6 +348,41 @@
   (when (called-interactively-p 'any)
     (pig-pop-to-buffer)))
 
+(defun pig--dwim-at-point ()
+  "If there's an active selection, return that. Otherwise, get
+   the symbol at point."
+  (if (use-region-p)
+      (buffer-substring-no-properties (region-beginning) (region-end))
+    (if (symbol-at-point)
+        (symbol-name (symbol-at-point)))))
+
+(defun pig-search-site (query)
+  "Search the official Pig site forums for the given QUERY and
+  open results in browser."
+  ;; (interactive "sSearch for: ")
+  (interactive (list (read-from-minibuffer
+                      "Search string: " (pig--dwim-at-point))))
+  (let* ((search-query (replace-regexp-in-string "\\s-+" "%20" query))
+	 (search-url (concat "https://www.google.com/search?"
+			     "sitesearch="
+			     pig-doc-url
+			     "r"
+			     pig-version
+			     "&Search=Search&q=%s"))
+         (search-url (format search-url search-query)))
+    (browse-url search-url)))
+
+(defun pig-find-in-reference ()
+  "Find word under cursor in Pig reference."
+  (interactive)
+  (let* ((doc-term (thing-at-point 'word))
+	 (search-url (concat pig-doc-url 
+			     "r" 
+			     pig-version 
+			     "/basic.html#" 
+			     (downcase doc-term))))
+  (browse-url search-url)))
+
 (easy-menu-define pig-mode-menu pig-mode-map
   "Menu used when Pig major mode is active."
   '("Pig"
@@ -373,6 +396,11 @@
     ["Eval Line" pig-eval-line
      :help "Pig Eval Line"]
     "---"
+    ["Find Reference" pig-find-in-reference
+     :help "Attempt to find the doc page for a given keyword."]
+    ["Search Docs" pig-search-site
+     :help "Site-search for a given query."]
+    "---"
     ["Settings" (customize-group 'pig)
      :help "Pig-mode settings"]))
 
@@ -382,6 +410,8 @@
     (define-key map (kbd "C-l") 'pig-eval-line)
     (define-key map (kbd "C-b") 'pig-eval-buffer)
     (define-key map (kbd "C-z") 'pig-run-pig)
+    (define-key map (kbd "C-f") 'pig-find-in-reference)
+    (define-key map (kbd "C-s") 'pig-search-site)
     map))
 
 (define-key pig-mode-map (kbd "C-c") pig-interaction-map)
