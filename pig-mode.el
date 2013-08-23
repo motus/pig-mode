@@ -105,6 +105,112 @@
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.pig\\'" . pig-mode))
 
+(defconst pig-basic-terms
+  '("COGROUP"
+    "CROSS"
+    "CUBE" ;; also for    "ROLLUP"
+    "DEFINE"
+    "DISTINCT"
+    "FILTER"
+    "FOREACH"
+    "GROUP"
+    "IMPORT"
+    "JOIN" ;; goes to inner
+    "LIMIT"
+    "LOAD"
+    "MAPREDUCE"
+    "ORDER"
+    "RANK"
+    "SAMPLE"
+    "SPLIT"
+    "STORE"
+    "STREAM" 
+    "THROUGH"
+    "UNION"))
+
+(defconst pig-basic-functions 
+  '("AVG"
+    "CONCAT"
+    "COUNT"
+    "COUNT_STAR"
+    "DIFF"
+    "IsEmpty"
+    "MAX"
+    "MIN"
+    "SIZE"
+    "SUM"
+    "TOKENIZE"
+    ;; Math Functions
+    "ABS"
+    "ACOS"
+    "ASIN"
+    "ATAN"
+    "CBRT"
+    "CEIL"
+    "COS"
+    "COSH"
+    "EXP"
+    "FLOOR"
+    "LOG"
+    "LOG10"
+    "RANDOM"
+    "ROUND"
+    "SIN"
+    "SINH"
+    "SQRT"
+    "TAN"
+    "TANH"
+    ;; String Functions
+    "INDEXOF"
+    "LAST_INDEX_OF"
+    "LCFIRST"
+    "LOWER"
+    "REGEX_EXTRACT"
+    "REGEX_EXTRACT_ALL"
+    "REPLACE"
+    "STRSPLIT"
+    "SUBSTRING"
+    "TRIM"
+    "UCFIRST"
+    "UPPER"
+    "TOTUPLE"
+    "TOBAG"
+    "TOMAP"
+    "TOP"))
+
+(defconst pig-basic-load-functions 
+  '(;; Load/Store Functions
+    "BinStorage"
+    "JsonLoader"
+    "JsonStorage"
+    "PigDump"
+    "PigStorage"
+    "TextLoader"
+    "HBaseStorage"))
+(defconst pig-basic-datetime-functions 
+    ;; DateTime Functions
+  '("AddDuration"
+    "CurrentTime"
+    "DaysBetween"
+    "GetDay"
+    "GetHour"
+    "GetMilliSecond"
+    "GetMinute"
+    "GetMonth"
+    "GetSecond"
+    "GetWeek"
+    "GetWeekYear"
+    "GetYear"
+    "HoursBetween"
+    "MilliSecondsBetween"
+    "MinutesBetween"
+    "MonthsBetween"
+    "SecondsBetween"
+    "SubtractDuration"
+    "ToDate"
+    "WeeksBetween"
+    "YearsBetween"))
+
 (defconst pig-font-lock-keywords
   `((,(regexp-opt
        '("COGROUP"
@@ -372,16 +478,37 @@
          (search-url (format search-url search-query)))
     (browse-url search-url)))
 
+(defun pig--split-name (s)
+      (split-string
+       (let ((case-fold-search nil))
+	 (downcase
+	  (replace-regexp-in-string "\\([a-z]\\)\\([A-Z]\\)" "\\1 \\2" s)))
+       "[^A-Za-z0-9]+"))
+
+(defun pig--dasherize  (s) (mapconcat 'downcase   (split-name s) "-"))
+
+(defun pig--find-term-url (term) 
+  (cond
+   ((member (upcase term) pig-basic-terms) 
+    (concat "/basic.html#" (downcase term)))
+   ((member (upcase term) pig-basic-functions)
+    (concat "/func.html#" (downcase term)))
+   ((member term pig-basic-load-functions)
+    (concat "/func.html#" term))
+   ((member term pig-basic-datetime-functions)
+    (concat "/func.html#" (pig--dasherize term)))))
+
 (defun pig-find-in-reference ()
   "Find word under cursor in Pig reference."
   (interactive)
   (let* ((doc-term (thing-at-point 'word))
+	 (url-term (pig--find-term-url doc-term))
 	 (search-url (concat pig-doc-url 
 			     "r" 
 			     pig-version 
-			     "/basic.html#" 
-			     (downcase doc-term))))
-  (browse-url search-url)))
+			     url-term)))
+    (unless url-term
+      (browse-url search-url))))
 
 (easy-menu-define pig-mode-menu pig-mode-map
   "Menu used when Pig major mode is active."
