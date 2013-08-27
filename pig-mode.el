@@ -490,19 +490,28 @@
 (defun pig--find-term-url (term) 
   (cond
    ((member (upcase term) pig-basic-terms) 
-    (concat "/basic.html#" (downcase term)))
+    (concat "/basic.html#" (downcase (pig--reference-term-map term))))
    ((member (upcase term) pig-basic-functions)
-    (concat "/func.html#" (downcase term)))
+    (concat "/func.html#" (downcase (pig--reference-term-map term))))
    ((member term pig-basic-load-functions)
-    (concat "/func.html#" term))
+    (concat "/func.html#" (pig--reference-term-map term)))
    ((member term pig-basic-datetime-functions)
     (concat "/func.html#" (pig--dasherize term)))))
+
+(defun pig--reference-term-map (term)
+  "Make sure ROLLUP points to CROSS and other stuff like that."
+  (interactive)
+  (cond
+   ((string= (downcase term) "rollup") "cube")
+   ((string= (downcase term) "join") "join-inner")
+   ((string= (downcase term) "through") "stream")
+   (t term)))
 
 (defun pig-find-in-reference ()
   "Find word under cursor in Pig reference."
   (interactive)
   (let* ((doc-term (thing-at-point 'word))
-	 (url-term (pig--find-term-url doc-term))
+	 (url-term (pig--find-term-url doc-term))	 
 	 (search-url (concat pig-doc-url 
 			     "r" 
 			     pig-version 
