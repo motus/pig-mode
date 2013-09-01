@@ -28,7 +28,8 @@ To install `pig-mode` manually, clone the repository:
 git clone https://github.com/motus/pig-mode
 ```
 
-In your `.emacs` file, add this:
+Put it somewhere `emacs` knows to look for it and in your `.emacs`
+file, add this:
 
 ```lisp
 (require 'pig-mode)
@@ -58,7 +59,7 @@ Add the following to set up processing snippets for [yasnippet][2]:
 
 ## Usage
 
-The defaul key-bindings are:
+The default key-bindings are:
 
     C-c C-z    Run Grunt Shell.
     C-c C-r    Pig Eval Region.
