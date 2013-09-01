@@ -1,8 +1,7 @@
-
 # Pig mode for Emacs
 
 pig-mode is an Emacs major mode for editing
-[Pig](http://hadoop.apache.org/pig scripts). Currently it supports
+[Pig][1](http://hadoop.apache.org/pig) scripts. Currently it supports
 syntax highlighting and indentation for Pig versions 0.2 to 0.11. We
 track the changes to Pig syntax and try to support new Pig features
 ASAP.
@@ -10,6 +9,8 @@ ASAP.
 PS. This project was originally hosted on sourceforge.net; we still
 maintain the page there, but from now on all new changes will be
 pushed to github first.
+
+[1]: http://hadoop.apache.org/pig
 
 ## Installation
 
@@ -45,6 +46,15 @@ Set variables in `.emacs` or with `customize-group RET pig RET`
 (setq pig-indent-level 4)
 (setq pig-version "0.11.1")
 ```
+
+Add the following to set up processing snippets for [yasnippet][2]:
+
+```lisp
+(autoload 'pig-snippets-initialize "pig-snippets" nil nil nil)
+(eval-after-load 'yasnippet '(pig-snippets-initialize))
+```
+
+[2]: https://github.com/capitaomorte/yasnippet
 
 ## Usage
 

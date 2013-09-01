@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: CROSS
+# key: CROSS
+# --
+CROSS ${1:A}, ${2:B};

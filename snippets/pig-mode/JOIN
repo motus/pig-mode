@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: JOIN
+# key: JOIN
+# --
+JOIN ${1:alias} BY ${2:expression}, ${3:alias} BY ${4:expression};

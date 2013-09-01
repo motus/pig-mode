@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: STREAM
+# key: STREAM
+# --
+STREAM ${1:alias} THROUGH ${2:command};

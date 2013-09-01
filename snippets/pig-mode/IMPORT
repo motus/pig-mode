@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: IMPORT
+# key: IMPORT
+# --
+IMPORT '${1:file}';

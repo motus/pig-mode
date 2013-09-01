@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: FOREACH
+# key: FOREACH
+# --
+FOREACH ${1:alias} GENERATE ${2:block};
