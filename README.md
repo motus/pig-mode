@@ -2,8 +2,9 @@
 
 pig-mode is an Emacs major mode for editing [Pig][1]
 scripts. Currently it supports syntax highlighting and indentation for
-Pig versions 0.2 to 0.11. We track the changes to Pig syntax and try
-to support new Pig features ASAP.
+Pig versions 0.2 to 0.11. It also supports a local grunt shell as well
+as snippets.  We track the changes to Pig syntax and try to support
+new Pig features ASAP.
 
 PS. This project was originally hosted on sourceforge.net; we still
 maintain the page there, but from now on all new changes will be
