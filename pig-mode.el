@@ -50,7 +50,7 @@
 ;; duplicated in a few (defconst) blocks.  This should be merged with
 ;; the pig-font-lock-keywords.
 
-;; Add snippets.
+;; Add more snippets.
 
 ;;; Code:
 
