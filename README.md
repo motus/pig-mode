@@ -13,7 +13,7 @@ pushed to github first.
 
 ## Installation
 
-## Package Installation 
+### Package Installation 
 
 The easiest way is to install the ELPA package from MELPA with `M-x
 package-install RET pig-mode`. All dependencies are automatically
