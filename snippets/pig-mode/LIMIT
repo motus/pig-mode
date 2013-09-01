@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: LIMIT
+# key: LIMIT
+# --
+LIMIT ${1:alias} ${2:n};
