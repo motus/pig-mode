@@ -1,22 +1,22 @@
 
-# Pig mode for Emacs
+h1. Pig mode for Emacs
 
 pig-mode is an Emacs major mode for editing "Pig":http://hadoop.apache.org/pig scripts. Currently it supports syntax highlighting and indentation for Pig versions 0.2 to 0.11. We track the changes to Pig syntax and try to support new Pig features ASAP.
 
 PS. This project was originally hosted on sourceforge.net; we still maintain the page there, but from now on all new changes will be pushed to github first.
 
-## Installation
+h2. Installation
 
 The easiest way is to install the ELPA package from MELPA with `M-x
 package-install RET pig-mode`. All dependencies are automatically
 installed.
 
-## Configuration
+h2. Configuration
 
 Set variables in `.emacs` or with `customize-group RET pig RET`
 (this works only after `pig-mode` has been loaded).
 
-## Usage
+h2. Usage
 
 The defaul key-bindings are:
 
