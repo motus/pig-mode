@@ -44,6 +44,14 @@
 ;;
 ;;   (require 'pig-mode)
 
+;;; Todo Notes:
+
+;; To make the Search and Help page launcher, the commands were
+;; duplicated in a few (defconst) blocks.  This should be merged with
+;; the pig-font-lock-keywords.
+
+;; Add snippets.
+
 ;;; Code:
 
 (eval-when-compile

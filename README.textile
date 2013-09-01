@@ -5,3 +5,25 @@ pig-mode is an Emacs major mode for editing "Pig":http://hadoop.apache.org/pig s
 
 PS. This project was originally hosted on sourceforge.net; we still maintain the page there, but from now on all new changes will be pushed to github first.
 
+
+## Installation
+
+The easiest way is to install the ELPA package from MELPA with `M-x
+package-install RET pig-mode`. All dependencies are automatically
+installed.
+
+## Configuration
+
+Set variables in `.emacs` or with `customize-group RET pig RET`
+(this works only after `pig-mode` has been loaded).
+
+## Usage
+
+The defaul key-bindings are:
+
+    C-c C-z    Run Grunt Shell.
+    C-c C-r    Pig Eval Region.
+    C-c C-l    Pig Eval Line.
+    C-c C-b    Pig Eval Buffer.
+    C-c C-f    Attempt to find the doc page for a given keyword.
+    C-c C-s    Site-search Apache Pig web for a given query.
