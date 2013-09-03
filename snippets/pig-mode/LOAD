@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: LOAD
+# key: LOAD
+# --
+LOAD ${1:filename} USING ${2:method}('${3:seperator}') AS (${4:schema});

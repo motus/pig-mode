@@ -1,4 +1,5 @@
 ;;; pig-mode.el --- Major mode for Pig files
+;; Version: 20130821.1454
 
 ;; Software License Agreement (BSD License)
 ;;
@@ -43,10 +44,24 @@
 ;;
 ;;   (require 'pig-mode)
 
+;;; Todo Notes:
+
+;; To make the Search and Help page launcher, the commands were
+;; duplicated in a few (defconst) blocks.  This should be merged with
+;; the pig-font-lock-keywords.
+
+;; Add more snippets.
+
 ;;; Code:
 
-(require 'font-lock)
-(require 'comint)
+(eval-when-compile
+  (require 'compile)
+  (require 'cl)
+  (require 'easymenu)
+  ;; (require 'thingatpt)
+  ;; (require 'cc-vars)
+  (require 'font-lock)
+  (require 'comint))
 
 (defgroup pig nil
   "Syntax highlighting and inferior-process interaction for Apache Pig."
@@ -69,6 +84,18 @@
   :group 'pig
   :type '(regexp))
 
+(defcustom pig-version "0.11.1"
+  "Pig version for the docs url."
+  :group 'pig
+  :type '(string))
+
+(defcustom pig-doc-url "http://pig.apache.org/docs/"
+  "Search URL of the official Processing forums.
+   %v will be replaced with the version. 
+   %s will be replaced with the search query."
+  :type 'string
+  :group 'processing)
+
 (defcustom pig-inferior-process-buffer "*pig*"
   "Name of the buffer containing the running process."
   :group 'pig
@@ -85,6 +112,112 @@
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.pig\\'" . pig-mode))
+
+(defconst pig-basic-terms
+  '("COGROUP"
+    "CROSS"
+    "CUBE" ;; also for    "ROLLUP"
+    "DEFINE"
+    "DISTINCT"
+    "FILTER"
+    "FOREACH"
+    "GROUP"
+    "IMPORT"
+    "JOIN" ;; goes to inner
+    "LIMIT"
+    "LOAD"
+    "MAPREDUCE"
+    "ORDER"
+    "RANK"
+    "SAMPLE"
+    "SPLIT"
+    "STORE"
+    "STREAM" 
+    "THROUGH"
+    "UNION"))
+
+(defconst pig-basic-functions 
+  '("AVG"
+    "CONCAT"
+    "COUNT"
+    "COUNT_STAR"
+    "DIFF"
+    "IsEmpty"
+    "MAX"
+    "MIN"
+    "SIZE"
+    "SUM"
+    "TOKENIZE"
+    ;; Math Functions
+    "ABS"
+    "ACOS"
+    "ASIN"
+    "ATAN"
+    "CBRT"
+    "CEIL"
+    "COS"
+    "COSH"
+    "EXP"
+    "FLOOR"
+    "LOG"
+    "LOG10"
+    "RANDOM"
+    "ROUND"
+    "SIN"
+    "SINH"
+    "SQRT"
+    "TAN"
+    "TANH"
+    ;; String Functions
+    "INDEXOF"
+    "LAST_INDEX_OF"
+    "LCFIRST"
+    "LOWER"
+    "REGEX_EXTRACT"
+    "REGEX_EXTRACT_ALL"
+    "REPLACE"
+    "STRSPLIT"
+    "SUBSTRING"
+    "TRIM"
+    "UCFIRST"
+    "UPPER"
+    "TOTUPLE"
+    "TOBAG"
+    "TOMAP"
+    "TOP"))
+
+(defconst pig-basic-load-functions 
+  '(;; Load/Store Functions
+    "BinStorage"
+    "JsonLoader"
+    "JsonStorage"
+    "PigDump"
+    "PigStorage"
+    "TextLoader"
+    "HBaseStorage"))
+(defconst pig-basic-datetime-functions 
+    ;; DateTime Functions
+  '("AddDuration"
+    "CurrentTime"
+    "DaysBetween"
+    "GetDay"
+    "GetHour"
+    "GetMilliSecond"
+    "GetMinute"
+    "GetMonth"
+    "GetSecond"
+    "GetWeek"
+    "GetWeekYear"
+    "GetYear"
+    "HoursBetween"
+    "MilliSecondsBetween"
+    "MinutesBetween"
+    "MonthsBetween"
+    "SecondsBetween"
+    "SubtractDuration"
+    "ToDate"
+    "WeeksBetween"
+    "YearsBetween"))
 
 (defconst pig-font-lock-keywords
   `((,(regexp-opt
@@ -329,12 +462,100 @@
   (when (called-interactively-p 'any)
     (pig-pop-to-buffer)))
 
+(defun pig--dwim-at-point ()
+  "If there's an active selection, return that. Otherwise, get
+   the symbol at point."
+  (if (use-region-p)
+      (buffer-substring-no-properties (region-beginning) (region-end))
+    (if (symbol-at-point)
+        (symbol-name (symbol-at-point)))))
+
+(defun pig-search-site (query)
+  "Search the official Pig site forums for the given QUERY and
+  open results in browser."
+  ;; (interactive "sSearch for: ")
+  (interactive (list (read-from-minibuffer
+                      "Search string: " (pig--dwim-at-point))))
+  (let* ((search-query (replace-regexp-in-string "\\s-+" "%20" query))
+	 (search-url (concat "https://www.google.com/search?"
+			     "sitesearch="
+			     pig-doc-url
+			     "r"
+			     pig-version
+			     "&Search=Search&q=%s"))
+         (search-url (format search-url search-query)))
+    (browse-url search-url)))
+
+(defun pig--split-name (s)
+      (split-string
+       (let ((case-fold-search nil))
+	 (downcase
+	  (replace-regexp-in-string "\\([a-z]\\)\\([A-Z]\\)" "\\1 \\2" s)))
+       "[^A-Za-z0-9]+"))
+
+(defun pig--dasherize  (s) (mapconcat 'downcase   (split-name s) "-"))
+
+(defun pig--find-term-url (term) 
+  (cond
+   ((member (upcase term) pig-basic-terms) 
+    (concat "/basic.html#" (downcase (pig--reference-term-map term))))
+   ((member (upcase term) pig-basic-functions)
+    (concat "/func.html#" (downcase (pig--reference-term-map term))))
+   ((member term pig-basic-load-functions)
+    (concat "/func.html#" (pig--reference-term-map term)))
+   ((member term pig-basic-datetime-functions)
+    (concat "/func.html#" (pig--dasherize term)))))
+
+(defun pig--reference-term-map (term)
+  "Make sure ROLLUP points to CROSS and other stuff like that."
+  (interactive)
+  (cond
+   ((string= (downcase term) "rollup") "cube")
+   ((string= (downcase term) "join") "join-inner")
+   ((string= (downcase term) "through") "stream")
+   (t term)))
+
+(defun pig-find-in-reference ()
+  "Find word under cursor in Pig reference."
+  (interactive)
+  (let* ((doc-term (thing-at-point 'word))
+	 (url-term (pig--find-term-url doc-term))	 
+	 (search-url (concat pig-doc-url 
+			     "r" 
+			     pig-version 
+			     url-term)))
+    (unless url-term
+      (browse-url search-url))))
+
+(easy-menu-define pig-mode-menu pig-mode-map
+  "Menu used when Pig major mode is active."
+  '("Pig"
+    ["Run Grunt" pig-run-pig
+     :help "Run Grunt Shell"]
+    "---"
+    ["Eval Buffer" pig-eval-buffer
+     :help "Pig Eval Buffer"]
+    ["Eval Region" pig-eval-region
+     :help "Pig Eval Region"]
+    ["Eval Line" pig-eval-line
+     :help "Pig Eval Line"]
+    "---"
+    ["Find Reference" pig-find-in-reference
+     :help "Attempt to find the doc page for a given keyword."]
+    ["Search Docs" pig-search-site
+     :help "Site-search for a given query."]
+    "---"
+    ["Settings" (customize-group 'pig)
+     :help "Pig-mode settings"]))
+
 (defvar pig-interaction-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "C-r") 'pig-eval-region)
     (define-key map (kbd "C-l") 'pig-eval-line)
     (define-key map (kbd "C-b") 'pig-eval-buffer)
     (define-key map (kbd "C-z") 'pig-run-pig)
+    (define-key map (kbd "C-f") 'pig-find-in-reference)
+    (define-key map (kbd "C-s") 'pig-search-site)
     map))
 
 (define-key pig-mode-map (kbd "C-c") pig-interaction-map)

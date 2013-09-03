@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: STORE
+# key: STORE
+# --
+STORE ${1:alias} INTO '${2:directory}' USING ${3:function};
+

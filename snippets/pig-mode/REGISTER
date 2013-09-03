@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: REGISTER
+# key: REGISTER
+# --
+REGISTER ${1:path};

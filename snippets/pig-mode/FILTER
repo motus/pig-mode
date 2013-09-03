@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: FILTER
+# key: FILTER
+# --
+FILTER ${1:alias} BY ${2:expression};
