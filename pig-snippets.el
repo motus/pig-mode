@@ -1,4 +1,4 @@
-;;; pig-snippets.el --- Snippets for the Processing major mode
+;;; pig-snippets.el --- Snippets for pig-mode
 
 ;; Copyright (C) 2013  Peter Vasil
 
