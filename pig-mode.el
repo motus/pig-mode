@@ -524,7 +524,7 @@
 			     "r" 
 			     pig-version 
 			     url-term)))
-    (unless url-term
+    (when url-term
       (browse-url search-url))))
 
 (easy-menu-define pig-mode-menu pig-mode-map
