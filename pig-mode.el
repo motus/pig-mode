@@ -519,13 +519,16 @@
   "Find word under cursor in Pig reference."
   (interactive)
   (let* ((doc-term (thing-at-point 'word))
-	 (url-term (pig--find-term-url doc-term))	 
-	 (search-url (concat pig-doc-url 
-			     "r" 
-			     pig-version 
-			     url-term)))
-    (when url-term
-      (browse-url search-url))))
+     (url-term (pig--find-term-url doc-term))
+     (search-url (concat pig-doc-url
+                 "r"
+                 pig-version
+                 url-term)))
+    (if url-term
+        (browse-url search-url)
+      (message "%s %s." 
+               "pig-mode: I don't know how to find reference for"
+               doc-term))))         
 
 (easy-menu-define pig-mode-menu pig-mode-map
   "Menu used when Pig major mode is active."
