@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: SAMPLE
 # key: sample
+# group: basics
 # contributor: David A. Shamma
 # --
 SAMPLE ${1:alias} ${2:size};

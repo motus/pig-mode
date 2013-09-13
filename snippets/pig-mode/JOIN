@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: JOIN
 # key: join
+# group: basics
 # contributor: David A. Shamma
 # --
 JOIN ${1:alias} BY ${2:expression}${3:$$(yas/choose-value '("" "OUTER"))}, ${4:alias} BY ${5:expression};

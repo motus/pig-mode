@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: GROUP
 # key: group
+# group: basics
 # contributor: David A. Shamma
 # --
 GROUP ${1:alias} BY ${2:expression} PARALLEL ${3:n};

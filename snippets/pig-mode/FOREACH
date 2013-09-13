@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: FOREACH
 # key: foreach
+# group: basics
 # contributor: David A. Shamma
 # --
 FOREACH ${1:alias} GENERATE ${2:block};

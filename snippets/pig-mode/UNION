@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: UNION
 # key: union
+# group: basics
 # contributor: David A. Shamma
 # --
 UNION ${1:alias}, ${2:size};
