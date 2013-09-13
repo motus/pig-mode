@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: STORE
-# key: STORE
+# key: store
+# contributor: David A. Shamma
 # --
 STORE ${1:alias} INTO '${2:directory}' USING ${3:function};
 

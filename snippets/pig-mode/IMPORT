@@ -1,5 +1,6 @@
 # -*- mode: snippet -*-
 # name: IMPORT
-# key: IMPORT
+# key: import
+# contributor: David A. Shamma
 # --
 IMPORT '${1:file}';

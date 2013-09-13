@@ -120,7 +120,9 @@
     "DEFINE"
     "DISTINCT"
     "FILTER"
+    "FLATTEN"
     "FOREACH"
+    "GENERATE"
     "GROUP"
     "IMPORT"
     "JOIN" ;; goes to inner
@@ -513,6 +515,8 @@
    ((string= (downcase term) "rollup") "cube")
    ((string= (downcase term) "join") "join-inner")
    ((string= (downcase term) "through") "stream")
+   ((string= (downcase term) "jsonloader") "jsonloadstore")
+   ((string= (downcase term) "generate") "foreach")
    (t term)))
 
 (defun pig-find-in-reference ()

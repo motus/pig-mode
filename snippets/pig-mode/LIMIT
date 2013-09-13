@@ -1,5 +1,6 @@
 # -*- mode: snippet -*-
 # name: LIMIT
-# key: LIMIT
+# key: limit
+# contributor: David A. Shamma
 # --
 LIMIT ${1:alias} ${2:n};

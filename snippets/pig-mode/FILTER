@@ -1,5 +1,6 @@
 # -*- mode: snippet -*-
 # name: FILTER
-# key: FILTER
+# key: filter
+# contributor: David A. Shamma
 # --
 FILTER ${1:alias} BY ${2:expression};

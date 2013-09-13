@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: REGISTER
-# key: register
+# name: UNION
+# key: union
 # contributor: David A. Shamma
 # --
-REGISTER ${1:path};
+UNION ${1:alias}, ${2:size};

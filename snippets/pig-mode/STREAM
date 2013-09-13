@@ -1,5 +1,6 @@
 # -*- mode: snippet -*-
 # name: STREAM
-# key: STREAM
+# key: stream
+# contributor: David A. Shamma
 # --
-STREAM ${1:alias} THROUGH ${2:command};
+STREAM ${1:alias} THROUGH ${2:command} AS ${3:schema};

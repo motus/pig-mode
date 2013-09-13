@@ -1,5 +1,6 @@
 # -*- mode: snippet -*-
 # name: DISTINCT
-# key: DISTINCT
+# key: distinct
+# contributor: David A. Shamma
 # --
 DISTINCT ${1:alias} PARTITION BY ${2:partitioner} PARALLEL ${3:n};

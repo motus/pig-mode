@@ -1,5 +1,6 @@
 # -*- mode: snippet -*-
 # name: CROSS
-# key: CROSS
+# key: cross
+# contributor: David A. Shamma
 # --
 CROSS ${1:A}, ${2:B};
