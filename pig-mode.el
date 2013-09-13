@@ -3,7 +3,7 @@
 
 ;; Software License Agreement (BSD License)
 ;;
-;; Copyright (c) 2009 Sergei Matusevich <sergei.matusevich@gmail.com>
+;; Copyright (c) 2009 Sergiy Matusevych <sergiy.matusevych@gmail.com>
 ;; All rights reserved.
 ;;
 ;; Maintainer: David A. Shamma
@@ -93,7 +93,7 @@
 
 (defcustom pig-doc-url "http://pig.apache.org/docs/"
   "Search URL of the official Processing forums.
-   %v will be replaced with the version. 
+   %v will be replaced with the version.
    %s will be replaced with the search query."
   :type 'string
   :group 'processing)
@@ -136,11 +136,11 @@
     "SAMPLE"
     "SPLIT"
     "STORE"
-    "STREAM" 
+    "STREAM"
     "THROUGH"
     "UNION"))
 
-(defconst pig-basic-functions 
+(defconst pig-basic-functions
   '("AVG"
     "CONCAT"
     "COUNT"
@@ -190,7 +190,7 @@
     "TOMAP"
     "TOP"))
 
-(defconst pig-basic-load-functions 
+(defconst pig-basic-load-functions
   '(;; Load/Store Functions
     "BinStorage"
     "JsonLoader"
@@ -199,7 +199,7 @@
     "PigStorage"
     "TextLoader"
     "HBaseStorage"))
-(defconst pig-basic-datetime-functions 
+(defconst pig-basic-datetime-functions
     ;; DateTime Functions
   '("AddDuration"
     "CurrentTime"
@@ -227,7 +227,7 @@
   `((,(regexp-opt
        '("COGROUP"
          "CROSS"
-	 "CUBE" "ROLLUP"
+         "CUBE" "ROLLUP"
          "DEFINE"
          "DISTINCT"
          "FILTER"
@@ -280,7 +280,7 @@
           "PigDump"
           "PigStorage"
           "TextLoader"
-	  "HBaseStorage"
+          "HBaseStorage"
           ;; Math Functions
           "ABS"
           "ACOS"
@@ -314,28 +314,28 @@
           "TRIM"
           "UCFIRST"
           "UPPER"
-	  ;; DateTime Functions
-	  "AddDuration"
-	  "CurrentTime"
-	  "DaysBetween"
-	  "GetDay"
-	  "GetHour"
-	  "GetMilliSecond"
-	  "GetMinute"
-	  "GetMonth"
-	  "GetSecond"
-	  "GetWeek"
-	  "GetWeekYear"
-	  "GetYear"
-	  "HoursBetween"
-	  "MilliSecondsBetween"
-	  "MinutesBetween"
-	  "MonthsBetween"
-	  "SecondsBetween"
-	  "SubtractDuration"
-	  "ToDate"
-	  "WeeksBetween"
-	  "YearsBetween"
+          ;; DateTime Functions
+          "AddDuration"
+          "CurrentTime"
+          "DaysBetween"
+          "GetDay"
+          "GetHour"
+          "GetMilliSecond"
+          "GetMinute"
+          "GetMonth"
+          "GetSecond"
+          "GetWeek"
+          "GetWeekYear"
+          "GetYear"
+          "HoursBetween"
+          "MilliSecondsBetween"
+          "MinutesBetween"
+          "MonthsBetween"
+          "SecondsBetween"
+          "SubtractDuration"
+          "ToDate"
+          "WeeksBetween"
+          "YearsBetween"
           ;; Tuple, Bag, Map Functions
           "TOTUPLE"
           "TOBAG"
@@ -481,27 +481,27 @@
   (interactive (list (read-from-minibuffer
                       "Search string: " (pig--dwim-at-point))))
   (let* ((search-query (replace-regexp-in-string "\\s-+" "%20" query))
-	 (search-url (concat "https://www.google.com/search?"
-			     "sitesearch="
-			     pig-doc-url
-			     "r"
-			     pig-version
-			     "&Search=Search&q=%s"))
+     (search-url (concat "https://www.google.com/search?"
+                 "sitesearch="
+                 pig-doc-url
+                 "r"
+                 pig-version
+                 "&Search=Search&q=%s"))
          (search-url (format search-url search-query)))
     (browse-url search-url)))
 
 (defun pig--split-name (s)
       (split-string
        (let ((case-fold-search nil))
-	 (downcase
-	  (replace-regexp-in-string "\\([a-z]\\)\\([A-Z]\\)" "\\1 \\2" s)))
+     (downcase
+      (replace-regexp-in-string "\\([a-z]\\)\\([A-Z]\\)" "\\1 \\2" s)))
        "[^A-Za-z0-9]+"))
 
 (defun pig--dasherize  (s) (mapconcat 'downcase (split-name s) "-"))
 
-(defun pig--find-term-url (term) 
+(defun pig--find-term-url (term)
   (cond
-   ((member (upcase term) pig-basic-terms) 
+   ((member (upcase term) pig-basic-terms)
     (concat "/basic.html#" (downcase (pig--reference-term-map term))))
    ((member (upcase term) pig-basic-functions)
     (concat "/func.html#" (downcase (pig--reference-term-map term))))
@@ -534,7 +534,7 @@
         (browse-url search-url)
       (message "%s '%s'." 
                "pig-mode: I don't know how to find reference for"
-               doc-term))))         
+               doc-term))))
 
 (easy-menu-define pig-mode-menu pig-mode-map
   "Menu used when Pig major mode is active."
