@@ -13,44 +13,46 @@
 ;; are met:
 ;; 1. Redistributions of source code must retain the above copyright
 ;;    notice, this list of conditions and the following disclaimer.
-;; 2. Redistributions in binary form must reproduce the above copyright
-;;    notice, this list of conditions and the following disclaimer in the
-;;    documentation and/or other materials provided with the distribution.
-;; 3. The name of the author may not be used to endorse or promote products
-;;    derived from this software without specific prior written permission.
+;; 2. Redistributions in binary form must reproduce the above
+;;    copyright notice, this list of conditions and the following
+;;    disclaimer in the documentation and/or other materials provided
+;;    with the distribution.
+;; 3. The name of the author may not be used to endorse or promote
+;;    products derived from this software without specific prior
+;;    written permission.
 ;;
-;; THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
-;; IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-;; OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-;; IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
-;; INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-;; NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-;; DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-;; THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-;; (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-;; THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+;; THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS
+;; OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+;; WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+;; ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+;; DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+;; DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+;; GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+;; INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+;; WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+;; NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+;; SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ;;; Commentary:
 
-;; pig-mode is an Emacs major mode for editing Pig scripts. Currently it
-;; supports syntax highlighting and indentation for Pig versions 0.2 to
-;; 0.11. We track the changes to Pig syntax and try to support new Pig
-;; features ASAP.
+;; pig-mode is an Emacs major mode for editing Pig scripts. Currently
+;; it supports syntax highlighting and indentation for Pig versions
+;; 0.2 to 0.11.1. We track the changes to Pig syntax and try to
+;; support new Pig features ASAP.
 
 ;;; Installation:
 
-;; Put this file into your Emacs lisp path (eg. site-lisp)
-;; and add the following line to your ~/.emacs file:
+;; Put this file into your Emacs lisp path (eg. site-lisp) and add the
+;; following line to your ~/.emacs file:
 ;;
 ;;   (require 'pig-mode)
 
 ;;; Todo Notes:
 
-;; To make the Search and Help page launcher, the commands were
-;; duplicated in a few (defconst) blocks.  This should be merged with
-;; the pig-font-lock-keywords.
-
-;; Add more snippets.
+;; 1. To make the Search and Help page launcher, the commands were
+;;    duplicated in a few (defconst) blocks.  This should be merged
+;;    with the pig-font-lock-keywords.
+;; 2. Add more snippets.
 
 ;;; Code:
 
@@ -120,7 +122,9 @@
     "DEFINE"
     "DISTINCT"
     "FILTER"
+    "FLATTEN"
     "FOREACH"
+    "GENERATE"
     "GROUP"
     "IMPORT"
     "JOIN" ;; goes to inner
@@ -493,7 +497,7 @@
       (replace-regexp-in-string "\\([a-z]\\)\\([A-Z]\\)" "\\1 \\2" s)))
        "[^A-Za-z0-9]+"))
 
-(defun pig--dasherize  (s) (mapconcat 'downcase   (split-name s) "-"))
+(defun pig--dasherize  (s) (mapconcat 'downcase (split-name s) "-"))
 
 (defun pig--find-term-url (term)
   (cond
@@ -513,6 +517,8 @@
    ((string= (downcase term) "rollup") "cube")
    ((string= (downcase term) "join") "join-inner")
    ((string= (downcase term) "through") "stream")
+   ((string= (downcase term) "jsonloader") "jsonloadstore")
+   ((string= (downcase term) "generate") "foreach")
    (t term)))
 
 (defun pig-find-in-reference ()
@@ -524,8 +530,11 @@
                  "r"
                  pig-version
                  url-term)))
-    (when url-term
-      (browse-url search-url))))
+    (if url-term
+        (browse-url search-url)
+      (message "%s '%s'." 
+               "pig-mode: I don't know how to find reference for"
+               doc-term))))
 
 (easy-menu-define pig-mode-menu pig-mode-map
   "Menu used when Pig major mode is active."
