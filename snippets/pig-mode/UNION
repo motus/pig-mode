@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
-# name: FOREACH
-# key: foreach
+# name: UNION
+# key: union
 # group: basics
 # contributor: David A. Shamma
 # --
-FOREACH ${1:alias} GENERATE ${2:block};
+UNION ${1:alias}, ${2:size};
