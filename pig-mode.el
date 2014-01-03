@@ -497,7 +497,7 @@
       (replace-regexp-in-string "\\([a-z]\\)\\([A-Z]\\)" "\\1 \\2" s)))
        "[^A-Za-z0-9]+"))
 
-(defun pig--dasherize  (s) (mapconcat 'downcase (split-name s) "-"))
+(defun pig--dasherize  (s) (mapconcat 'downcase (pig--split-name s) "-"))
 
 (defun pig--find-term-url (term)
   (cond
