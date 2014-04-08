@@ -252,7 +252,7 @@
          "INPUT" "OUTPUT" "SHIP" "CACHE" "FLATTEN"
          "SECONDS" "MINUTES" "HOURS" "ASC" "DESC" "LEFT" "RIGHT"
          "FULL"  "NULL" "AND" "OR" "NOT" "MATCHES" "IS"
-         "DESCRIBE" "ILLUSTRATE" "DUMP")
+         "DESCRIBE" "ILLUSTRATE" "DUMP" "RETURNS")
        'words)
      (1 font-lock-keyword-face))
 
