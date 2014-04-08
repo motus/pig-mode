@@ -349,7 +349,7 @@
     ("\\<$[0-9]+\\>" . font-lock-variable-name-face)
     (,(regexp-opt
        '(;; Simple Types
-         "int" "long" "float" "double" "chararray" "bytearray" "boolean" "DateTime"
+         "int" "long" "float" "double" "chararray" "bytearray" "boolean" "DateTime" "void"
          ;; Complex Types
          "tuple" "bag" "map")
        'words)
