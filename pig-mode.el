@@ -440,8 +440,15 @@
 (defun pig-eval-line ()
   "Evaluate the current line with pig."
   (interactive)
-  (pig-eval-region (save-excursion (move-beginning-of-line nil) (point))
-                   (save-excursion (move-end-of-line nil) (point))))
+  (pig-eval-region (line-beginning-position 1)
+                   (1- (line-beginning-position 2))))
+
+(defun pig-eval-line-and-next ()
+  "Evaluate the current line with pig and move point to the next line with code."
+  (interactive)
+  (pig-eval-line)
+  (beginning-of-line 2)
+  (while (forward-comment 1)))  ; skip all comments and whitespace
 
 (defun pig-eval-buffer ()
   "Evaluate the current buffer with pig."
@@ -569,6 +576,7 @@ The argument is passed to `mark-paragraph'."
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "C-r") 'pig-eval-region)
     (define-key map (kbd "C-l") 'pig-eval-line)
+    (define-key map (kbd "C-n") 'pig-eval-line-and-next)
     (define-key map (kbd "C-b") 'pig-eval-buffer)
     (define-key map (kbd "C-p") 'pig-eval-paragraph)
     (define-key map (kbd "C-z") 'pig-run-pig)
