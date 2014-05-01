@@ -14,7 +14,7 @@ pushed to github first.
 
 ## Installation
 
-### Package Installation 
+### Package Installation
 
 The easiest way is to install the ELPA package from MELPA with `M-x
 package-install RET pig-mode`. All dependencies are automatically
@@ -38,7 +38,7 @@ file, add this:
 ## Configuration
 
 Set variables in `.emacs` or with `customize-group RET pig RET`
-(this works only after `pig-mode` has been loaded).  
+(this works only after `pig-mode` has been loaded).
 
 ```lisp
 (setq pig-executable "/path/to/pig-0.11.1/bin/pig")
@@ -65,5 +65,6 @@ The default key-bindings are:
     C-c C-r    Pig Eval Region.
     C-c C-l    Pig Eval Line.
     C-c C-b    Pig Eval Buffer.
+    C-c C-p    Pig Eval Paragraph.
     C-c C-f    Attempt to find the doc page for a given keyword.
     C-c C-s    Site-search Apache Pig web for a given query.

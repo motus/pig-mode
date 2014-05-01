@@ -448,6 +448,14 @@
   (interactive)
   (pig-eval-region (point-min) (point-max)))
 
+(defun pig-eval-paragraph (arg)
+  "Eval the current paragraph with pig.
+The argument is passed to `mark-paragraph'."
+  (interactive "p")
+  (save-excursion
+    (mark-paragraph arg)
+    (pig-eval-region (point) (mark))))
+
 (define-derived-mode inferior-pig-mode comint-mode "Pig"
   "Interact with a PIG process through Emacs."
   (setq comint-prompt-regexp "^grunt>")
@@ -532,7 +540,7 @@
                  url-term)))
     (if url-term
         (browse-url search-url)
-      (message "%s '%s'." 
+      (message "%s '%s'."
                "pig-mode: I don't know how to find reference for"
                doc-term))))
 
@@ -562,6 +570,7 @@
     (define-key map (kbd "C-r") 'pig-eval-region)
     (define-key map (kbd "C-l") 'pig-eval-line)
     (define-key map (kbd "C-b") 'pig-eval-buffer)
+    (define-key map (kbd "C-p") 'pig-eval-paragraph)
     (define-key map (kbd "C-z") 'pig-run-pig)
     (define-key map (kbd "C-f") 'pig-find-in-reference)
     (define-key map (kbd "C-s") 'pig-search-site)
