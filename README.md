@@ -64,6 +64,7 @@ The default key-bindings are:
     C-c C-z    Run Grunt Shell.
     C-c C-r    Pig Eval Region.
     C-c C-l    Pig Eval Line.
+    C-c C-n    Pig Eval line and move to the Next one.
     C-c C-b    Pig Eval Buffer.
     C-c C-p    Pig Eval Paragraph.
     C-c C-f    Attempt to find the doc page for a given keyword.
