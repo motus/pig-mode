@@ -378,18 +378,19 @@
 (defun pig-indent-line ()
   "Indent current line as Pig code"
   (interactive)
-  (indent-line-to (save-excursion
-    (beginning-of-line)
-    (if (looking-at ".*}[ \t]*;[ \t]*$")
-        (pig-statement-indentation)
-      (forward-line -1)
-      (while (and (not (bobp)) (looking-at "^[ \t]*$"))
-        (forward-line -1))
-      (cond
-       ((bobp) 0)
-       ((looking-at "^[ \t]*--") (current-indentation))
-       ((looking-at ".*;[ \t]*$") (pig-statement-indentation))
-       (t (+ (pig-statement-indentation) pig-indent-level)))))))
+  (indent-line-to
+   (save-excursion
+     (beginning-of-line)
+     (if (looking-at ".*}[ \t]*;[ \t]*$")
+         (pig-statement-indentation)
+       (forward-line -1)
+       (while (and (not (bobp)) (looking-at "^[ \t]*$"))
+         (forward-line -1))
+       (cond
+         ((bobp) 0)
+         ((looking-at "^[ \t]*--") (current-indentation))
+         ((looking-at ".*;[ \t]*\\(--.*\\)?$") (pig-statement-indentation))
+         (t (+ (pig-statement-indentation) pig-indent-level)))))))
 
 (defun pig-statement-indentation ()
   (save-excursion
@@ -397,9 +398,12 @@
     (cond
      ((bobp) 0)
      ((looking-at ".*\\(}[ \t]*;\\|)\\)[ \t]*$")
-      (end-of-line)
-      (backward-list)
-      (pig-statement-indentation) )
+      (let ((here (line-beginning-position)))
+        (end-of-line)
+        (backward-list)
+        (if (= here (line-beginning-position))
+            (current-indentation)
+          (pig-statement-indentation))))
      ((search-backward-regexp "[{;][ \t]*$" nil t)
       (forward-line 1)
       (beginning-of-line)
@@ -495,15 +499,10 @@ The argument is passed to `mark-paragraph'."
   ;; (interactive "sSearch for: ")
   (interactive (list (read-from-minibuffer
                       "Search string: " (pig--dwim-at-point))))
-  (let* ((search-query (replace-regexp-in-string "\\s-+" "%20" query))
-     (search-url (concat "https://www.google.com/search?"
-                 "sitesearch="
-                 pig-doc-url
-                 "r"
-                 pig-version
-                 "&Search=Search&q=%s"))
-         (search-url (format search-url search-query)))
-    (browse-url search-url)))
+  (browse-url (concat "https://www.google.com/search?"
+                      "sitesearch=" pig-doc-url "r" pig-version
+                      "&Search=Search&q="
+                      (replace-regexp-in-string "\\s-+" "%20" query))))
 
 (defun pig--split-name (s)
       (split-string
@@ -540,15 +539,10 @@ The argument is passed to `mark-paragraph'."
   "Find word under cursor in Pig reference."
   (interactive)
   (let* ((doc-term (thing-at-point 'word))
-     (url-term (pig--find-term-url doc-term))
-     (search-url (concat pig-doc-url
-                 "r"
-                 pig-version
-                 url-term)))
+         (url-term (pig--find-term-url doc-term)))
     (if url-term
-        (browse-url search-url)
-      (message "%s '%s'."
-               "pig-mode: I don't know how to find reference for"
+        (browse-url (concat pig-doc-url "r" pig-version url-term))
+      (message "pig-mode: I don't know how to find reference for '%s'."
                doc-term))))
 
 (easy-menu-define pig-mode-menu pig-mode-map
