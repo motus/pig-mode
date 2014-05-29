@@ -389,7 +389,7 @@
        (cond
          ((bobp) 0)
          ((looking-at "^[ \t]*--") (current-indentation))
-         ((looking-at ".*;[ \t]*$") (pig-statement-indentation))
+         ((looking-at ".*;[ \t]*\\(--.*\\)?$") (pig-statement-indentation))
          (t (+ (pig-statement-indentation) pig-indent-level)))))))
 
 (defun pig-statement-indentation ()
