@@ -146,7 +146,7 @@
     "COUNT"
     "COUNT_STAR"
     "DIFF"
-    "IsEmpty"
+    "ISEMPTY"
     "MAX"
     "MIN"
     "SIZE"
