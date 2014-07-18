@@ -383,16 +383,19 @@
   (indent-line-to
    (save-excursion
      (beginning-of-line)
-     (if (looking-at ".*}[ \t]*;[ \t]*$")
-         (pig-statement-indentation)
-       (forward-line -1)
-       (while (and (not (bobp)) (looking-at "^[ \t]*$"))
-         (forward-line -1))
-       (cond
-         ((bobp) 0)
-         ((looking-at "^[ \t]*--") (current-indentation))
-         ((looking-at ".*;[ \t]*\\(--.*\\)?$") (pig-statement-indentation))
-         (t (+ (pig-statement-indentation) pig-indent-level)))))))
+     (cond ((looking-at "[ \t]*\\(%declare\\|%default\\)") 0)
+           ((looking-at ".*}[ \t]*;[ \t]*$")
+            (pig-statement-indentation))
+           (t
+            (forward-line -1)
+            (while (and (not (bobp)) (looking-at "^[ \t]*$"))
+              (forward-line -1))
+            (cond
+              ((bobp) 0)
+              ((looking-at "[ \t]*\\(%declare\\|%default\\)") (pig-statement-indentation))
+              ((looking-at "^[ \t]*--") (current-indentation))
+              ((looking-at ".*;[ \t]*\\(--.*\\)?$") (pig-statement-indentation))
+              (t (+ (pig-statement-indentation) pig-indent-level))))))))
 
 (defun pig-statement-indentation ()
   (save-excursion
