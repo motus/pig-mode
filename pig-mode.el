@@ -230,7 +230,6 @@
        '("COGROUP"
          "CROSS"
          "CUBE" "ROLLUP"
-         "DEFINE" "%DECLARE" "%DEFAULT"
          "DISTINCT"
          "FILTER"
          "FOREACH"
@@ -258,9 +257,25 @@
        'words)
      (1 font-lock-keyword-face))
 
-    ("^ *\\(REGISTER\\) *\\([^;]+\\)"
+    ("^[ \t]*\\(REGISTER\\)[ \t]+\\([^ \t;]+\\);"
      (1 font-lock-keyword-face)
      (2 font-lock-string-face))
+
+    ("^[ \t]*\\(DEFINE\\)[ \t]+\\([^ \t]+\\)"
+     (1 font-lock-keyword-face)
+     (2 font-lock-function-name-face))
+
+    (,(concat "^[ \t]*" (regexp-opt '("%DECLARE" "%DEFAULT") t)
+              "[ \t]+\\([^ \t]+\\)\\([^ \t;]+\\)")
+     (1 font-lock-keyword-face)
+     (2 font-lock-variable-name-face)
+     (3 font-lock-string-face))
+
+    ("^[ \t]*\\(SET\\)[ \t]+\\([^ \t]+\\)[ \t]+\\([^ \t;]+\\)[ \t]*;"
+     (1 font-lock-keyword-face)
+     (2 font-lock-variable-name-face)
+     (3 font-lock-string-face))
+
     (,(concat
        (regexp-opt
         '(;; Eval Functions
@@ -377,13 +392,17 @@
   :type 'integer :group 'pig)
 (put 'pig-indent-level 'safe-local-variable 'integerp)
 
+(defconst pig-top-level-commands '("%declare" "%default" "register"))
+(defconst pig-top-level-regexp
+  (concat "[ \t]*" (regexp-opt pig-top-level-commands)))
+
 (defun pig-indent-line ()
   "Indent current line as Pig code"
   (interactive)
   (indent-line-to
    (save-excursion
      (beginning-of-line)
-     (cond ((looking-at "[ \t]*\\(%declare\\|%default\\)") 0)
+     (cond ((looking-at pig-top-level-regexp) 0)
            ((looking-at ".*}[ \t]*;[ \t]*$")
             (pig-statement-indentation))
            (t
@@ -392,7 +411,7 @@
               (forward-line -1))
             (cond
               ((bobp) 0)
-              ((looking-at "[ \t]*\\(%declare\\|%default\\)") (pig-statement-indentation))
+              ((looking-at pig-top-level-regexp) (pig-statement-indentation))
               ((looking-at "^[ \t]*--") (current-indentation))
               ((looking-at ".*;[ \t]*\\(--.*\\)?$") (pig-statement-indentation))
               (t (+ (pig-statement-indentation) pig-indent-level))))))))
