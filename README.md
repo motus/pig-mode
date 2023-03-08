@@ -10,7 +10,7 @@ PS. This project was originally hosted on sourceforge.net; we still
 maintain the page there, but from now on all new changes will be
 pushed to github first.
 
-[1]: http://hadoop.apache.org/pig
+[1]: https://pig.apache.org/
 
 ## Installation
 
